@@ -79,15 +79,11 @@ public class Estoque {
             throw new ApiErrorException("Quantidade maior que estoque");
         }
 
-
-
         quantidade -= qtd;
         this.valorTotal = calculaValorTotal();
 
         if (this.quantidade <= 10){
             System.out.println("Estoque abaixo de 10 peças, favor repor imediatamente");
         }
-
-
     }
 }

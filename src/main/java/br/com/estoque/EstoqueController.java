@@ -12,12 +12,9 @@ import java.util.Optional;
 @RequestMapping("/itens")
 public class EstoqueController {
 
-
-    private final ItemRepository itemRepository;
     private final EstoqueRepository estoqueRepository;
 
-    public EstoqueController(ItemRepository itemRepository, EstoqueRepository estoqueRepository) {
-        this.itemRepository = itemRepository;
+    public EstoqueController(EstoqueRepository estoqueRepository) {
         this.estoqueRepository = estoqueRepository;
     }
 
@@ -39,10 +36,8 @@ public class EstoqueController {
             estoqueRepository.delete(estoque.get());
             return ResponseEntity.noContent().build();
         }
-
         return ResponseEntity.notFound().build();
     }
-
 
     @GetMapping
     public void buscaItem(@RequestParam(value = "nome", required = false) String nome,
@@ -50,17 +45,11 @@ public class EstoqueController {
                           @RequestParam(value = "categoria", required = false) String categoria) {
 
         //TODO implementar get com múltiplos parâmetros
-
-
     }
-
 
     @PatchMapping("/{itemId}/acrescenta")
     @Transactional
     public ResponseEntity acrescentaItem(@PathVariable Long itemId, @RequestBody @Valid AlteraQtdItensRequest request) {
-
-        System.out.println(itemId);
-        System.out.println(request.quantidade());
 
         Optional<Estoque> estoque = estoqueRepository.findById(itemId);
 
@@ -68,9 +57,7 @@ public class EstoqueController {
             estoque.get().adicionaQuantidade(request.quantidade());
             return ResponseEntity.ok().build();
         }
-
         return ResponseEntity.notFound().build();
-
     }
 
     @PatchMapping("/{itemId}/remove")
@@ -87,9 +74,6 @@ public class EstoqueController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
             }
         }
-
         return ResponseEntity.notFound().build();
-
     }
-
 }
